@@ -20,5 +20,6 @@ n = network_calc(c_pre);
 %c_post should be a {datapoint (date we predict from) x hub} matrix
 c_post = hub_calc(n);
 n_points = 12;
+c_post = ones(10512, 4)/10512;
 %p should be a {datapoint x predictions} matrix
 p = create_predictions(c_post, given, n_points);
