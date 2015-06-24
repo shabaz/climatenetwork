@@ -24,7 +24,7 @@ for window=0:11,
     end;
     %store using 8 bit numbers, abs corr.coef. is only in 0-1 range and a
     %resolution of 0-255 seems good enough to capture it (vs 64 bit double)
-    results = uint8(results*255);
+    results = uint16(results*65025);
     filename = sprintf('%s_%s.%d.mat',a_name, b_name, window);
     save(filename, 'results');
     toc
