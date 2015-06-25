@@ -9,9 +9,9 @@ names = {'wtr','press','hum','temp'};
 for i=1:4
     for j=1:4
         %fill in variables
-        want = var_names(i);
+        want = var_names{i};
         want_name = names(i);
-        given = var_names(j);
+        given = var_names{j};
         given_name = names(j);
         file_name = strcat(want_name, '_', given_name, '.1.mat');
         file_name_normalized_want = strcat(want_name, '_normalized.mat');
@@ -38,6 +38,7 @@ for i=1:4
         end
     end
 end
+
 % %c_pre should be a {data_type_we_want x data_type_we_predict_from}
 % c_pre = importdata(file_name);
 % n = network_calc(c_pre);
