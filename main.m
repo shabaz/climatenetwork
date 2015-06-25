@@ -10,9 +10,9 @@ for i=1:4
     for j=1:4
         %fill in variables
         want = var_names{i};
-        want_name = names(i);
+        want_name = names{i};
         given = var_names{j};
-        given_name = names(j);
+        given_name = names{j};
         file_name = strcat(want_name, '_', given_name, '.1.mat');
         file_name_normalized_want = strcat(want_name, '_normalized.mat');
         file_name_normalized_given = strcat(given_name, '_normalized.mat');
