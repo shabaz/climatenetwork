@@ -7,6 +7,8 @@ for window=0:11,
 
     %for offset=-6:6,
         % select subset for current window and offset
+        %X = reshape(A(:,(1:60)+6+window*60), 10512,60)';
+        %Y = reshape(B(:,(1:60)+offset+6+window*60), 10512,60)';
         X = reshape(A(:,(1:60)+window*60), 10512,60)';
         Y = reshape(B(:,(1:60)+window*60), 10512,60)';
         %normalize dataset by subtracting means
