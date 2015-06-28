@@ -1,3 +1,4 @@
+function main()
 pr_wtr = single(ncread('pr_wtr.mon.mean.nc', 'pr_wtr'));
 pressure = single(ncread('pres.mon.mean.nc', 'pres'));
 humidity = single(ncread('rhum.mon.mean.nc', 'rhum'));
@@ -6,8 +7,8 @@ temperature = single(ncread('air.mon.mean.nc', 'air'));
 var_names = {pr_wtr,pressure,humidity,temperature};
 names = {'wtr','press','hum','temp'};
 
-for i=1:4
-    for j=1:4
+for i=1:size(names,1)
+    for j=1:size(names,1)
         %fill in variables
         want = var_names{i};
         want_name = names{i};
@@ -37,6 +38,46 @@ for i=1:4
           correlation_calc(want, given, want_name, given_name);  
         end
     end
+end
+end
+
+function univariate_communities_granger_visualize_one_timeslice()
+    var_names = {pr_wtr,pressure,humidity,temperature};
+    names = {'wtr','press','hum','temp'};
+    %fill in variables
+    want = var_names{1};
+    want_name = names{1};
+    given = var_names{1};
+    given_name = names{1};
+    file_name = strcat(want_name, '_', given_name, '.9.mat');
+    file_name_normalized_given = strcat(given_name, '_normalized.mat');
+    given = importdata(file_name_normalized_given);
+    correlations = importdata(file_name);
+    
+    %insert prune here maybe
+    hubs = hub_calc(correlations);
+    hubs_time = hub_time_series(hubs, given);
+    granger_hub_network =  granger_hub(hubs_time);
+    %visualise_hub_network(granger_hub_network); 
+end
+
+function univariate_communities_predictions_one_timeslice()
+    var_names = {pr_wtr,pressure,humidity,temperature};
+    names = {'wtr','press','hum','temp'};
+    %fill in variables
+    want = var_names{1};
+    want_name = names{1};
+    given = var_names{1};
+    given_name = names{1};
+    file_name = strcat(want_name, '_', given_name, '.8.mat');
+    file_name_normalized_given = strcat(given_name, '_normalized.mat');
+    given = importdata(file_name_normalized_given);
+    correlations = importdata(file_name);
+    %insert prune here maybe
+    hubs = hub_calc(correlations);
+    predictions = create_predictions(hubs,given,60);
+    visualize_predictions
+
 end
 
 % %c_pre should be a {data_type_we_want x data_type_we_predict_from}
