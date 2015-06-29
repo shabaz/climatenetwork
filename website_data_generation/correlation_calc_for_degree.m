@@ -24,6 +24,19 @@ for window=0:11,
         res = abs(res);
         results = max(res, results);
     end;
+    
+    
+    %%%
+    % Multiply the results by 1/cosine of the latitude to account
+    % for the fact that points closer to the equator account
+    % for smaller cells on the grid on the atlas
+    %%%
+    for i=1:length(results(:,1))
+        results(i,:) = results(i,:)*(1/cos(2.5*pi/180));
+    end;
+    %%%
+    
+    
     %store using 8 bit numbers, abs corr.coef. is only in 0-1 range and a
     %resolution of 0-255 seems good enough to capture it (vs 64 bit double)
     results = uint8(results*256);
