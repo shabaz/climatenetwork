@@ -1,4 +1,4 @@
-function correlation_calc(A,B, a_name, b_name)
+function correlation_calc_for_degree(A,B, a_name, b_name)
 
 msg = sprintf('running correlation on %s_%s',a_name, b_name);
 disp(msg);
