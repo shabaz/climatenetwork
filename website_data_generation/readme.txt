@@ -11,8 +11,10 @@ How to generate all datafiles currently used by the website.
 6) in the Walktrap directory, run make (or copy the win32 executable into the 
    directory)
 7) run parse_communities.py
-8) copy over all the .bin files in the website_data_generation and Walktrap
+8) back in the website_data_generation directory, run 
+   correlation_between_sites_for_degree.m to generate correlation matrices
+   based on univariate correlation
+9) run create_pruned_network.m to generate degree maps for univariate correlation
+   network
+10) copy over all the .bin files in the website_data_generation and Walktrap
    directories into the website directory
-
-Todo: the network degree files generation (cobbled together while generating 
-      them)
