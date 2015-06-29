@@ -1,6 +1,6 @@
 pr_wtr = ncread('pr_wtr.mon.mean.nc', 'pr_wtr');
 pressure = ncread('pres.mon.mean.nc', 'pres');
-humidity = ncread('rhum.sig995.mon.mean.nc', 'rhum');
+humidity = ncread('rhum.mon.mean.nc', 'rhum');
 temperature = ncread('air.mon.mean.nc', 'air');
 
 
