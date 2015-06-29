@@ -4,10 +4,12 @@
         <meta charset='utf-8'>
 
         <script src="sylvester.js" type="text/javascript"></script>
+        <script src="./sigma.min.js"></script>
         <script src="glUtils.js" type="text/javascript"></script>
         <script src="webgl-demo.js" type="text/javascript"></script>
         <script src="degree-plot.js" type="text/javascript"></script>
         <script src="community-plot.js" type="text/javascript"></script>
+        <script src="networkgraph.js" type="text/javascript"></script>
 
         <script id="shader-fs" type="x-shader/x-fragment">
             varying highp vec2 vTextureCoord;
@@ -181,7 +183,7 @@
         </script>
         <link href="style.css" rel="stylesheet">
     </head>
-    <body onload="startDegreePlot();startCommunityPlot();">
+    <body onload="startDegreePlot();startCommunityPlot();networkgraphStart();">
         <div id="main">
             <header>
             <h1 onclick="document.documentElement.mozRequestFullScreen()">Analysing the Climate System using Complex Networks</h1>
@@ -189,7 +191,7 @@
             </header>
             <div id="left-column" style="width:800px; height:100%; float:left;">
             <article>
-            <h2>Datasets</h2>
+            <h2 onclick="start();">Datasets</h2>
             <canvas id="glcanvas" width="640" height="480">
             Your browser doesn't appear to support the HTML5 <code>&lt;canvas&gt;</code> element.
             </canvas>
@@ -210,8 +212,11 @@
                 </article>
                 <article>
                 <h2>Network Construction</h2>
+                <div id="container" style="width:640px;height:480px;margin-bottom:30px;"></div>
                 </article>
 
+        </div>
+        <div id="center-column" style="width:800px; height:100%; display: inline-block;">
             <article>
             <h2>Basic Network Metrics</h2>
             <canvas id="degree-canvas" width="640" height="480" style="box-shadow: 10px 10px 5px #888888; margin-bottom:30px">
@@ -232,8 +237,6 @@
             
             in the period <span id="degree-date">1948 to 1953</span>.</p>
         </article>
-        </div>
-        <div id="center-column" style="width:800px; height:100%; display: inline-block;">
             <article>
             <h2>Community Detection</h2>
             <canvas id="community-canvas" width="640" height="480" style="box-shadow: 10px 10px 5px #888888; margin-bottom:30px">
