@@ -3,6 +3,15 @@ function correlation_calc_for_degree(A,B, a_name, b_name)
 msg = sprintf('running correlation on %s_%s',a_name, b_name);
 disp(msg);
 
+%create list to scale by latitude
+lat = -90:2.5:90;
+lat = cos(lat*pi/180);
+%Correct for the size of each grid point but scaling w.r.t latitude
+for k=1:73
+    A(:,k,:) = A(:,k,:)*lat(k);
+    B(:,k,:) = B(:,k,:)*lat(k);
+end
+
 for window=0:11,
     results = zeros(10512, 10512);
     tic;
@@ -23,19 +32,7 @@ for window=0:11,
         res = res ./ st;
         res = abs(res);
         results = max(res, results);
-    end;
-    
-    
-    %%%
-    % Multiply the results by 1/cosine of the latitude to account
-    % for the fact that points closer to the equator account
-    % for smaller cells on the grid on the atlas
-    %%%
-    for i=1:length(results(:,1))
-        results(i,:) = results(i,:)*(1/cos(2.5*pi/180));
-    end;
-    %%%
-    
+    end;    
     
     %store using 8 bit numbers, abs corr.coef. is only in 0-1 range and a
     %resolution of 0-255 seems good enough to capture it (vs 64 bit double)
