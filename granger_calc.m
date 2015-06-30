@@ -19,7 +19,7 @@ function ret = granger_calc(want,given)
                         if sqrt((X)^2+(Y)^2) < square_size,                      
                             w = reshape(want(x,y,:),size(want,3),1);
                             g = reshape(given(x+X,y+Y,:),size(given,3),1);
-                            [F, c_v] = granger_cause(w,g,0.001, 1);
+                            [F, c_v] = granger_cause(w,g,0.05, 1);
                             ret(((x-1)*73)+y,((x+X-1)*73)+Y+y) = F/c_v;
                         end
                     end
