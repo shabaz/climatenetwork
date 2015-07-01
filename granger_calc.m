@@ -26,6 +26,6 @@ function ret = granger_calc(want,given)
                 end
             end
         end
-        toc,x
+        %toc
     end
 end

@@ -1,5 +1,13 @@
-function output = normalize_month(data),
+function output = normalize_month(data)
      %correctly format data
+     
+    %create list to scale by latitude
+    lat = -90:2.5:90;
+    lat = cos(lat*pi/180);
+    %Correct for the size of each grid point but scaling w.r.t latitude
+    for k=1:73
+        data(:,k,:) = data(:,k,:)*lat(k);
+    end
 
     data = reshape(data(:,:,(1:size(data,3))), 10512,size(data,3));
     output = [];

@@ -3,13 +3,13 @@ pressure = single(ncread('pres.mon.mean.nc', 'pres'));
 humidity = single(ncread('rhum.mon.mean.nc', 'rhum'));
 temperature = single(ncread('air.mon.mean.nc', 'air'));
 
-%var_names = {pr_wtr,pressure,humidity,temperature};
-%names = {'wtr','press','hum','temp'};
-var_names={pr_wtr};
-names={'wtrday'};
+var_names = {pr_wtr,pressure,humidity,temperature};
+names = {'wtr','press','hum','temp'};
+% var_names={pr_wtr};
+% names={'wtrday'};
 
-for i=1:size(names,1)
-    for j=1:size(names,1)
+for i=1:4
+    for j=1:4
         %fill in variables
         want = var_names{i};
         want_name = names{i};
@@ -31,25 +31,34 @@ for i=1:size(names,1)
             given = normalize_month(given);
             save(file_name_normalized_given, 'given');
             toc
-        end
-        want = importdata(file_name_normalized_want);
-        given = importdata(file_name_normalized_given);
+        end        
+        
 
         %if exist(file_name, 'file') == 0
         %  correlation_calc(want, given, want_name, given_name);  
         %end
     end
 end
-want = var_names{1};
-want_name = names{1};
-given = var_names{1};
-given_name = names{1};
-file_name_normalized_given = strcat(given_name, '_normalized.mat');
-file_name_normalized_want = strcat(want_name, '_normalized.mat');
-given = importdata(file_name_normalized_given);
-want = importdata(file_name_normalized_want);
+for i=1:4
+    for j=1:4
+        
+        want = var_names{i};
+        want_name = names{i};
+        given = var_names{j};
+        given_name = names{j};
+        file_name_normalized_given = strcat(given_name, '_normalized.mat');
+        file_name_normalized_want = strcat(want_name, '_normalized.mat');
+        given = importdata(file_name_normalized_given);
+        want = importdata(file_name_normalized_want);
+        
+        results = granger_calc(want,given);
+        results = uint8(results*256);
+        filename = sprintf('%s_%s.granger.mat',want_name, given_name);
+        save(filename, 'results');
 
-ret = granger_calc(want,given);
+        
+    end
+end
 
 %c_pre should be a {data_type_we_want x data_type_we_predict_from}
 %c_pre = importdata(file_name);
