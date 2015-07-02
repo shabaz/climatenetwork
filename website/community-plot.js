@@ -16,7 +16,19 @@ var perspectiveMatrix;
 
 var comTextureArray;
 
+var currentColor = -1;
+
     canvas = document.getElementById("community-canvas");
+
+    function getMousePos(canvas, evt) {
+        var rect = canvas.getBoundingClientRect();
+        return {
+            x: evt.clientX - rect.left,
+            y: evt.clientY - rect.top
+        };
+    }
+
+
     gl = canvas.getContext("experimental-webgl");
 
 
@@ -73,6 +85,24 @@ function loadData(filename, textureArray) {
                 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST_MIPMAP_NEAREST);
                 gl.generateMipmap(gl.TEXTURE_2D);
             }
+
+
+
+            canvas.addEventListener('click', function(evt) {
+                var mousePos = getMousePos(canvas, evt);
+                var i = Math.floor(mousePos.x/640.0*144);
+                var j = Math.floor(mousePos.y/480.0*73);
+
+                var texNum = parseInt(document.getElementById("community-range").value);
+                communityNum = arrayBuffer[j*144+(i+72)%144 + texNum*(144*73)];
+                if (currentColor == -1) {
+                    currentColor = communityNum;
+                } else {
+                    currentColor = -1;
+                }
+                drawScene();
+
+            }, false);
         }
 
 
@@ -142,6 +172,7 @@ function drawScene() {
 
   gl.bindTexture(gl.TEXTURE_2D, comTextureArray[sliderVal]);
   gl.uniform1i(gl.getUniformLocation(shaderProgram, "dataType"), 5);
+  gl.uniform1i(gl.getUniformLocation(shaderProgram, "currentColor"), currentColor);
 
   orthoMatrix = makeOrtho(-1, 1, -1, 1, -10, 10);
   loadIdentity();

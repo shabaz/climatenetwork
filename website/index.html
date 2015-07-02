@@ -16,6 +16,7 @@
             varying highp vec2 vTextureCoord;
             uniform sampler2D uSampler;
             uniform int dataType;
+            uniform int currentColor;
 
             //based on http://geog.uoregon.edu/datagraphics/color/BuDRd_12.txt
             lowp vec3 colorForTemp(lowp float temp) {
@@ -117,7 +118,13 @@
                 lowp float red = fract((float(int(community) * 124123))/1000.0);
                 lowp float green = fract((float(int(community) * 3445223))/1000.0);
                 lowp float blue = fract((float(int(community) * 125722))/1000.0);
+                if (currentColor != -1) {
+                    if (community != float(currentColor)) {
+                        return vec3(0.0, 0.0, 0.0);
+                    }
+                }
                 return vec3(red,green,blue);
+
 
 
 
