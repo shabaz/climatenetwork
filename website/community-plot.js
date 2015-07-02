@@ -48,11 +48,65 @@ var currentColor = -1;
             comTextureArray[i] = gl.createTexture();
         }
 
+        canvas.addEventListener('mouseenter', function(evt) {
+                var communityInfoBlock = document.getElementById("community-info-block");
+                communityInfoBlock.style.display = "block";
+        }, false);
+
+        canvas.addEventListener('mouseleave', function(evt) {
+                var communityInfoBlock = document.getElementById("community-info-block");
+                communityInfoBlock.style.display = "none";
+        }, false);
+
         loadData("./communities_over_time.bin", comTextureArray);
+        loadDataCorrPerPosition("./correlations_per_position.bin");
 
 
     }
 
+function loadDataCorrPerPosition(filename) {
+    var oReq = new XMLHttpRequest();
+    oReq.open("GET", filename, true);
+    oReq.responseType = "arraybuffer";
+    oReq.send(null);
+
+    oReq.onload = function (oEvent) {
+        var arrayBuffer = new Float32Array(oReq.response);
+
+        if (arrayBuffer) {
+            canvas.addEventListener('mousemove', function(evt) {
+                var mousePos = getMousePos(canvas, evt);
+                var i = Math.floor(mousePos.x/640.0*144);
+                var j = Math.floor(mousePos.y/480.0*73);
+
+                var texNum = parseInt(document.getElementById("community-range").value);
+                var humTemp = arrayBuffer[(j*144+(i+72)%144 + texNum*(144*73))*6 + 0].toFixed(2);
+                var humPres = arrayBuffer[(j*144+(i+72)%144 + texNum*(144*73))*6 + 1].toFixed(2);
+                var humPrec = arrayBuffer[(j*144+(i+72)%144 + texNum*(144*73))*6 + 2].toFixed(2);
+                var tempPres = arrayBuffer[(j*144+(i+72)%144 + texNum*(144*73))*6 + 3].toFixed(2);
+                var tempPrec = arrayBuffer[(j*144+(i+72)%144 + texNum*(144*73))*6 + 4].toFixed(2);
+                var presPrec = arrayBuffer[(j*144+(i+72)%144 + texNum*(144*73))*6 + 5].toFixed(2);
+
+                var message = "absolute correlation pair values:<br/> humidity-temperature: " +humTemp+"<br/>";
+                message += "humidity-pressure: "+humPres+"<br/>";
+                message += "humidity-precipitable water: "+humPrec+"<br/>";
+                message += "temperature-pressure: "+tempPres+"<br/>";
+                message += "temperature-precipitable water: "+tempPrec+"<br/>";
+                message += "pressure-precipitable water: "+presPrec;
+
+                var communityInfoBlock = document.getElementById("community-info-block");
+                communityInfoBlock.innerHTML = message;
+
+            }, false);
+        }
+
+
+        gl.uniform1i(gl.getUniformLocation(shaderProgram, "uSampler"), 0);
+        //updateSlider(document.getElementById("dataset-range").value);
+
+        drawScene();
+    };
+}
 
 function loadData(filename, textureArray) {
     var oReq = new XMLHttpRequest();

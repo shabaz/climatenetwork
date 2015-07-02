@@ -6,6 +6,7 @@ temperature = ncread('air.mon.mean.nc', 'air');
 [lat_dim,lon_dim,time_dim] = size(temperature);
 
 
+fileID = fopen('correlations_per_position.bin','w');
 master_matrix = zeros(lat_dim, lon_dim, 6);
 
 for window = 0:11,
@@ -30,7 +31,9 @@ for window = 0:11,
             master_matrix(i,j,:) = [a(1,2) a(1,3) a(1,4) a(2,3) a(2,4) a(3,4)];
         end
     end
-    q = reshape(master_matrix, 144*73, 6);
+    q = single(reshape(master_matrix, 144*73, 6));
+    fwrite(fileID, q(:,:), 'float32');
+
     local_distances = pdist(q, 'euclidean');
     threshold = quantile(local_distances, 0.01);
     local_distances(local_distances > threshold) = 0;
@@ -39,3 +42,4 @@ for window = 0:11,
     save(filename, 'local_distances');
     toc
 end
+fclose(fileID);
