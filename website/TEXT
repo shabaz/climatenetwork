@@ -22,5 +22,14 @@ Granger Causality
 -----------------
 
 The network is generated using the granger causality of neighbouring cells less
-than 5 cells away
+than 5 cells away. We use a delay of 1 timeslot. The data we used was the daily
+data from the NCEP/NCAR reanalysis project. After this we draw a vector field
+averaging the weighed direction of the granger causality.
 
+
+Community Detection
+-------------------
+
+The communities are detected by using the walktrap algorithm. The walktrap algorithm uses the
+multivariate correlated pruned network edges. Communities are tracked over time
+by assigning the same color when they have more than 50% similarity.
