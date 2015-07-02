@@ -5,12 +5,13 @@ canvas {
     margin-left:60px;
 }
 body {
+    margin-top: 100px;
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 #main {
     width: 2400px;
-    height: 1735px;
+    height: 1810px;
     margin:auto;
     background-color: rgba(240, 255, 0, 0.11);
     border-radius: 20px;
@@ -80,10 +81,25 @@ input[type=range] {
   }
 
 ul {
-    margin: 20px 25px;
+    margin: 20px 10px 20px -10px;
 
 }
 
 li {
     list-style-type: none;
+}
+
+sup {
+    font-size: 60%;
+}
+
+/* All the same stuff for Firefox */
+input[type=range]::-moz-range-thumb {
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  border: 1px solid #000000;
+  height: 20px;
+  width: 8px;
+  border-radius: 3px;
+  background: #ffffff;
+  cursor: pointer;
 }

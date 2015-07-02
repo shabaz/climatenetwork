@@ -193,14 +193,15 @@
             <div id="left-column" style="width:800px; height:100%; float:left;">
             <article>
             <h2 onclick="start();">Datasets</h2>
-            <canvas id="glcanvas" width="640" height="480">
+            <canvas id="glcanvas" width="640" height="480" style="margin-bottom:30px;">
             Your browser doesn't appear to support the HTML5 <code>&lt;canvas&gt;</code> element.
             </canvas>
             <br/>
 
             <input type=range min=0 max=808 value=0 step=1 oninput="document.getElementById('dataset-animate').checked = false; updateSlider(this.value);" id="dataset-range" style="width:600px;">
             <input id="dataset-animate" type=checkbox onchange="animateDataset();">
-            <p>The 
+            <p>
+            The models build on datasets from the NCEP/NCAR reanalysis project.  It takes data from heterogeneous, potentially incomplete sources and normalizes that data.  The  
             <select id="dataset-select" style="-moz-appearance:none; border:none; font-size:100%; min-width:10%;" onchange="updateDataset();">
                 <option value="everything">precipitable water, temperature, pressure and humidity</option>
                 <option value="temperature">temperature</option>
@@ -208,12 +209,19 @@
                 <option value="humidity">humidity</option>
                 <option value="pressure">pressure</option>
             </select>  
-            data at <span id="dataset-date">January, 1948</span>. 
+            data on <span id="dataset-date">January, 1948</span> is currently displayed. 
+            
+            </p>
+            
             <!--span class='cite'>Kalnay, E., Kanamitsu, M., Kistler, R., Collins, W., Deaven, D., Gandin, L., … Joseph, D. (1996). The NCEP/NCAR 40-year reanalysis project. Bulletin of the American Meteorological Society.<cite-->
                 </article>
                 <article>
                 <h2>Network Construction</h2>
                 <div id="container" style="width:640px;height:480px;margin-bottom:30px;"></div>
+
+                <p> For each location local correlation is calculated between every pair of variables (humidity and temperature, temperature and pressure, etc.). This gives each location a point in 
+                &#8477;<sup>6</sup>. A fully connected network is then generated, using euclidean distance in &#8477;<sup>6</sup> as weight for a link between locations. The network then prunes 99% of the edges, keeping only the strongest links. 
+                </p>
                 </article>
 
         </div>
@@ -225,7 +233,8 @@
             </canvas>
             <br/>
             <input type=range min=0 max=11 value=0 step=1 oninput="updateDegreeSlider(this.value);" id="degree-range" style="width:600px;">
-            <p>The degree of the network based on 
+            <p>
+            As soon as we have a network we can calculate basic network metrics for each node such as degree centrality, cluster coefficient or betweenness centrality. We have created networks for 12 different five year periods. Currently showing the degree centrality for networks based on
             
             
             <select id="degree-dataset-select" style="-moz-appearance:none; border:none; font-size:100%; min-width:10%;" onchange="updateDegreeSet();">
@@ -246,7 +255,10 @@
             <br/>
             <input type=range min=0 max=11 value=0 step=1 oninput="updateCommunitySlider(this.value);" id="community-range" style="width:600px;">
             <p>
-            Communities detected in the period <span id="community-date">1948 to 1953</span>.</p>
+            By looking for communities in the network we can find regions of the climate system that behave in the same way and are not necessarily spatially close. We use the Walktrap algorithm for community detection, based on random walks in the network. 
+            
+Communities are then tracked over time by assigning the same color when communities in two adjecent timesteps have more than 50% overlap.
+            Displayed are the communities detected in the period <span id="community-date">1948 to 1953</span>.</p>
         </div>
         </article>
         <div id="right-column" style="width:800px; height:100%; float:right;">
@@ -255,8 +267,20 @@
                 <article>
                 <h2>Granger Causality</h2>
                 <div id="granger-container" style="width:640px;height:480px;margin-bottom:30px;"></div>
+
+                <p>
+                Finding locations that have correlated behaviour does not tell us if these locations are causally linked. Finding causal links is not trivial, but one measure that can be used is Transfer Entropy, which tells us if a model based on two timeseries is more predictive for behaviour at a location versus just using the timeseries at said location. When assuming a linear autoregressive model, this reduces to Granger causality, which is what we used. The network only looked at granger causality of neighbouring cells less
+than 5 cells away. We use a delay of 1 timeslot. The data we used was the daily data from the NCEP/NCAR reanalysis project. We draw a subsample of the strongest causal links.
+                </p>
+                
                 </article>
 
+            <article>
+            <h2>Conclusions</h2>
+            <p>
+            We have been able to use local correlations between different variable to construct network on correlation similarity. Pruning these networks so that only the strongest links are kept gives a network that allows for basic network analysis. Community finding algorithms on these networks allow for discovery of climate communities with similar interaction between temperature, humidity, precipitable water and pressure. Building networks using Granger Causality allows for deeper links to be found in the climate system, offering pointers to emergent phenomena in the climate system.
+            </p>
+            </article>
             <article>
             <h2>References</h2>
 
@@ -267,7 +291,6 @@
                 <li>Steinhaeuser, K., Chawla, N. V, & Ganguly, A. R. (n.d.). Complex networks in climate science: progress, opportunities and challenges, 1–11.</li>
                 <li>Steinhaeuser, K., Chawla, N. V, & Ganguly, A. R. (2010a). Complex Networks as a Unified Framework for Descriptive Analysis and Predictive Modeling in Climate Science. Science And Technology, 4(5), 497–511. doi:10.1002/sam</li>
                 <li>Steinhaeuser, K., Chawla, N. V., & Ganguly, A. R. (2010b). An exploration of climate data using complex networks. ACM SIGKDD Explorations Newsletter, 12(1), 25. doi:10.1145/1882471.1882476 </li>
-                <li>Kalnay, E., Kanamitsu, M., Kistler, R., Collins, W., Deaven, D., Gandin, L., … Joseph, D. (1996). The NCEP/NCAR 40-year reanalysis project. Bulletin of the American Meteorological Society.</li>
 </ul>
             </article>
             </div>
