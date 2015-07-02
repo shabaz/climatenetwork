@@ -1,18 +1,19 @@
 <!doctype html>
 <html>
-<head>
-<meta charset='utf-8'>
+    <head>
+        <meta charset='utf-8'>
 
-<script src="sylvester.js" type="text/javascript"></script>
-<script src="./sigma.min.js"></script>
-<script src="glUtils.js" type="text/javascript"></script>
-<script src="webgl-demo.js" type="text/javascript"></script>
-<script src="degree-plot.js" type="text/javascript"></script>
-<script src="community-plot.js" type="text/javascript"></script>
-<script src="networkgraph.js" type="text/javascript"></script>
+        <script src="sylvester.js" type="text/javascript"></script>
+        <script src="./sigma.min.js"></script>
+        <script src="glUtils.js" type="text/javascript"></script>
+        <script src="webgl-demo.js" type="text/javascript"></script>
+        <script src="degree-plot.js" type="text/javascript"></script>
+        <script src="community-plot.js" type="text/javascript"></script>
+        <script src="networkgraph.js" type="text/javascript"></script>
+        <script src="grangergraph.js" type="text/javascript"></script>
 
-<script id="shader-fs" type="x-shader/x-fragment">
-varying highp vec2 vTextureCoord;
+        <script id="shader-fs" type="x-shader/x-fragment">
+            varying highp vec2 vTextureCoord;
             uniform sampler2D uSampler;
             uniform int dataType;
 
@@ -164,14 +165,14 @@ varying highp vec2 vTextureCoord;
                 }
                 gl_FragColor.a = 1.0;
             }
-</script>
+        </script>
 
-<script id="shader-vs" type="x-shader/x-vertex">
-attribute vec3 aVertexPosition;
+        <script id="shader-vs" type="x-shader/x-vertex">
+            attribute vec3 aVertexPosition;
             attribute vec2 aTexCoord;
 
             varying highp vec2 vTextureCoord;
-
+            
 
             uniform mat4 uMVMatrix;
             uniform mat4 uPMatrix;
@@ -180,28 +181,20 @@ attribute vec3 aVertexPosition;
                 gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
                 vTextureCoord = aTexCoord;
             }
-</script>
-<!-- Victor added Code -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script src="jquery.zoomooz.min.js"></script> 
-
-<link href="style.css" rel="stylesheet">
-</head>
-<body onload="startDegreePlot();startCommunityPlot();networkgraphStart();">
-
-<div id="main">
-  <header>
-    <h1 onclick="document.documentElement.mozRequestFullScreen()">Analysing the Climate System using Complex Networks</h1>
-    <p id="names">Victor Azizi, Andrew Bedard, Shabaz Sultan</p>
-  </header>
-<div class="zoomViewport my-container">
-  <div class="zoomContainer">
-      <div id="left-column" style="width:800px; height:100%; float:left;">
-        <div class="zoomTarget">
-          <article>
+        </script>
+        <link href="style.css" rel="stylesheet">
+    </head>
+    <body onload="startDegreePlot();startCommunityPlot();networkgraphStart();grangergraphStart()">
+        <div id="main">
+            <header>
+            <h1 onclick="document.documentElement.mozRequestFullScreen()">Analysing the Climate System using Complex Networks</h1>
+            <p id="names">Victor Azizi, Andrew Bedard, Shabaz Sultan</p>
+            </header>
+            <div id="left-column" style="width:800px; height:100%; float:left;">
+            <article>
             <h2 onclick="start();">Datasets</h2>
             <canvas id="glcanvas" width="640" height="480">
-              Your browser doesn't appear to support the HTML5 <code>&lt;canvas&gt;</code> element.
+            Your browser doesn't appear to support the HTML5 <code>&lt;canvas&gt;</code> element.
             </canvas>
             <br/>
 
@@ -209,70 +202,74 @@ attribute vec3 aVertexPosition;
             <input id="dataset-animate" type=checkbox onchange="animateDataset();">
             <p>The 
             <select id="dataset-select" style="-moz-appearance:none; border:none; font-size:100%; min-width:10%;" onchange="updateDataset();">
-              <option value="everything">precipitable water, temperature, pressure and humidity</option>
-              <option value="temperature">temperature</option>
-              <option value="precipitation">precipitable water</option>
-              <option value="humidity">humidity</option>
-              <option value="pressure">pressure</option>
+                <option value="everything">precipitable water, temperature, pressure and humidity</option>
+                <option value="temperature">temperature</option>
+                <option value="precipitation">precipitable water</option>
+                <option value="humidity">humidity</option>
+                <option value="pressure">pressure</option>
             </select>  
             data at <span id="dataset-date">January, 1948</span>. 
             <!--span class='cite'>Kalnay, E., Kanamitsu, M., Kistler, R., Collins, W., Deaven, D., Gandin, L., … Joseph, D. (1996). The NCEP/NCAR 40-year reanalysis project. Bulletin of the American Meteorological Society.<cite-->
-          </article>
+                </article>
+                <article>
+                <h2>Network Construction</h2>
+                <div id="container" style="width:640px;height:480px;margin-bottom:30px;"></div>
+                </article>
+
         </div>
-        <div class="zoomTarget">
-          <article>
-            <h2>Network Construction</h2>
-            <div id="container" style="width:640px;height:480px;margin-bottom:30px;"></div>
-          </article>
-        </div>
-      </div>
-      <div id="center-column" style="width:800px; height:100%; display: inline-block;">
-        <div class="zoomTarget">
-          <article>
+        <div id="center-column" style="width:800px; height:100%; display: inline-block;">
+            <article>
             <h2>Basic Network Metrics</h2>
             <canvas id="degree-canvas" width="640" height="480" style="box-shadow: 10px 10px 5px #888888; margin-bottom:30px">
-              Your browser doesn't appear to support the HTML5 <code>&lt;canvas&gt;</code> element.
+            Your browser doesn't appear to support the HTML5 <code>&lt;canvas&gt;</code> element.
             </canvas>
             <br/>
             <input type=range min=0 max=11 value=0 step=1 oninput="updateDegreeSlider(this.value);" id="degree-range" style="width:600px;">
             <p>The degree of the network based on 
-
-
+            
+            
             <select id="degree-dataset-select" style="-moz-appearance:none; border:none; font-size:100%; min-width:10%;" onchange="updateDegreeSet();">
-              <option value="temperature">univariate correlation on temperature</option>
-              <option value="pressure">univariate correlation on pressure</option>
-              <option value="precipitation">univariate correlation on precipitable water</option>
-              <option value="humidity">univariate correlation on humidity</option>
-              <option value="multivariate">multivariate correlation on four variables</option>
+                <option value="temperature">univariate correlation on temperature</option>
+                <option value="pressure">univariate correlation on pressure</option>
+                <option value="precipitation">univariate correlation on precipitable water</option>
+                <option value="humidity">univariate correlation on humidity</option>
+                <option value="multivariate">multivariate correlation on four variables</option>
             </select>  
-
+            
             in the period <span id="degree-date">1948 to 1953</span>.</p>
-          </article>
-        </div>
-        <div class="zoomTarget">
-          <article>
+        </article>
+            <article>
             <h2>Community Detection</h2>
             <canvas id="community-canvas" width="640" height="480" style="box-shadow: 10px 10px 5px #888888; margin-bottom:30px">
-              Your browser doesn't appear to support the HTML5 <code>&lt;canvas&gt;</code> element.
+            Your browser doesn't appear to support the HTML5 <code>&lt;canvas&gt;</code> element.
             </canvas>
             <br/>
             <input type=range min=0 max=11 value=0 step=1 oninput="updateCommunitySlider(this.value);" id="community-range" style="width:600px;">
             <p>
             Communities detected in the period <span id="community-date">1948 to 1953</span>.</p>
-          </article>
         </div>
-      </div>
-      <div id="right-column" style="width:800px; height:100%; float:right;">
-        <div class="zoomTarget">
-          <article>
+        </article>
+        <div id="right-column" style="width:800px; height:100%; float:right;">
+
+
+                <article>
+                <h2>Granger Causality</h2>
+                <div id="granger-container" style="width:640px;height:480px;margin-bottom:30px;"></div>
+                </article>
+
+            <article>
             <h2>References</h2>
 
-            <p id='cite'>Kalnay, E., Kanamitsu, M., Kistler, R., Collins, W., Deaven, D., Gandin, L., … Joseph, D. (1996). The NCEP/NCAR 40-year reanalysis project. Bulletin of the American Meteorological Society.</p>
-          </article>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-</body>
-</html>
+            <ul id='cite'>
+                <li>Hlinka, J., Hartman, D., Vejmelka, M., Runge, J., Marwan, N., Kurths, J., & Palǔs, M. (2013). Reliability of inference of directed climate networks using conditional mutual information. Entropy, 15(6), 2023–2045. doi:10.3390/e15062023</li>
+                <li>Kalnay, E., Kanamitsu, M., Kistler, R., Collins, W., Deaven, D., Gandin, L., … Joseph, D. (1996). The NCEP/NCAR 40-year reanalysis project. Bulletin of the American Meteorological Society. doi:10.1175/1520-0477(1996)077<0437:TNYRP>2.0.CO;2</li>
+                <li>Pons, P., & Latapy, M. (2005). Computing communities in large networks using random walks. Journal of Graph Algorithms and Applications, 10(2), 191–218. doi:10.1007/11569596</li>
+                <li>Steinhaeuser, K., Chawla, N. V, & Ganguly, A. R. (n.d.). Complex networks in climate science: progress, opportunities and challenges, 1–11.</li>
+                <li>Steinhaeuser, K., Chawla, N. V, & Ganguly, A. R. (2010a). Complex Networks as a Unified Framework for Descriptive Analysis and Predictive Modeling in Climate Science. Science And Technology, 4(5), 497–511. doi:10.1002/sam</li>
+                <li>Steinhaeuser, K., Chawla, N. V., & Ganguly, A. R. (2010b). An exploration of climate data using complex networks. ACM SIGKDD Explorations Newsletter, 12(1), 25. doi:10.1145/1882471.1882476 </li>
+                <li>Kalnay, E., Kanamitsu, M., Kistler, R., Collins, W., Deaven, D., Gandin, L., … Joseph, D. (1996). The NCEP/NCAR 40-year reanalysis project. Bulletin of the American Meteorological Society.</li>
+</ul>
+            </article>
+            </div>
+        </body>
+    </html>
