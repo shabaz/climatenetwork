@@ -80,12 +80,12 @@ function loadDataCorrPerPosition(filename) {
                 var j = Math.floor(mousePos.y/480.0*73);
 
                 var texNum = parseInt(document.getElementById("community-range").value);
-                var humTemp = arrayBuffer[(j*144+(i+72)%144 + texNum*(144*73))*6 + 0].toFixed(2);
-                var humPres = arrayBuffer[(j*144+(i+72)%144 + texNum*(144*73))*6 + 1].toFixed(2);
-                var humPrec = arrayBuffer[(j*144+(i+72)%144 + texNum*(144*73))*6 + 2].toFixed(2);
-                var tempPres = arrayBuffer[(j*144+(i+72)%144 + texNum*(144*73))*6 + 3].toFixed(2);
-                var tempPrec = arrayBuffer[(j*144+(i+72)%144 + texNum*(144*73))*6 + 4].toFixed(2);
-                var presPrec = arrayBuffer[(j*144+(i+72)%144 + texNum*(144*73))*6 + 5].toFixed(2);
+                var humTemp = arrayBuffer[(j*144+(i+72)%144 + texNum*(144*73*6)) +  0*(144*73)].toFixed(2);
+                var humPres = arrayBuffer[(j*144+(i+72)%144 + texNum*(144*73*6)) +  1*(144*73)].toFixed(2);
+                var humPrec = arrayBuffer[(j*144+(i+72)%144 + texNum*(144*73*6)) +  2*(144*73)].toFixed(2);
+                var tempPres = arrayBuffer[(j*144+(i+72)%144 + texNum*(144*73*6)) + 3*(144*73)].toFixed(2);
+                var tempPrec = arrayBuffer[(j*144+(i+72)%144 + texNum*(144*73*6)) + 4*(144*73)].toFixed(2);
+                var presPrec = arrayBuffer[(j*144+(i+72)%144 + texNum*(144*73*6)) + 5*(144*73)].toFixed(2);
 
                 var message = "absolute correlation pair values:<br/> humidity-temperature: " +humTemp+"<br/>";
                 message += "humidity-pressure: "+humPres+"<br/>";
