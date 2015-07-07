@@ -194,7 +194,18 @@
     <body onload="startDegreePlot();startCommunityPlot();networkgraphStart();grangergraphStart();start()">
         <div id="main">
             <header>
-            <h1 onclick="document.documentElement.mozRequestFullScreen()">Analysing the Climate System using Complex Networks</h1>
+            <h1 onclick="
+               var elem = document.documentElement;
+               if (elem.requestFullscreen) {
+               elem.requestFullscreen();
+               } else if (elem.msRequestFullscreen) {
+               elem.msRequestFullscreen();
+               } else if (elem.mozRequestFullScreen) {
+               elem.mozRequestFullScreen();
+               } else if (elem.webkitRequestFullscreen) {
+               elem.webkitRequestFullscreen();
+               } 
+                ">Analysing the Climate System using Complex Networks</h1>
             <p id="names">Victor Azizi, Andrew Bedard, Shabaz Sultan</p>
             </header>
             <div id="left-column" style="width:800px; height:100%; float:left;">
@@ -210,7 +221,7 @@
             <input id="dataset-animate" type=checkbox onchange="animateDataset();">
             <p>
             The models build on datasets from the NCEP/NCAR reanalysis project.  It takes data from heterogeneous, potentially incomplete sources and normalizes that data.  The  
-            <select id="dataset-select" style="-moz-appearance:none; border:none; font-size:100%; min-width:10%;" onchange="updateDataset();">
+            <select id="dataset-select" style="-moz-appearance:none; -webkit-appearance:none; border:none; font-size:100%; min-width:10%;" onchange="updateDataset();">
                 <option value="everything">precipitable water, temperature, pressure and humidity</option>
                 <option value="temperature">temperature</option>
                 <option value="precipitation">precipitable water</option>
@@ -245,7 +256,7 @@
             As soon as we have a network we can calculate basic network metrics for each node such as degree centrality, cluster coefficient or betweenness centrality. We have created networks for 12 different five year periods. Currently showing the degree centrality for networks based on
             
             
-            <select id="degree-dataset-select" style="-moz-appearance:none; border:none; font-size:100%; min-width:10%;" onchange="updateDegreeSet();">
+            <select id="degree-dataset-select" style="-moz-appearance:none; -webkit-appearance: none; border:none; font-size:100%; min-width:10%;" onchange="updateDegreeSet();">
                 <option value="temperature">univariate correlation on temperature</option>
                 <option value="pressure">univariate correlation on pressure</option>
                 <option value="precipitation">univariate correlation on precipitable water</option>

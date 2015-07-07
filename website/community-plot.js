@@ -22,18 +22,23 @@ var currentBlock = undefined;
 
 
 
+    var mainDiv = document.getElementById("main");
+    document.body.scrollLeft = mainDiv.offsetLeft;
+    mainDiv.scrollIntoView({block: "start", behavior: "smooth"});
     var h2s = document.getElementsByTagName('h2');
 
     for(var i = 0; i < h2s.length; i++) {
         h2s[i].addEventListener('click', function(evt) {
-            var mainDiv = document.getElementById("main");
             if (currentBlock ==  this) {
                 currentBlock = undefined;
                 mainDiv.style.transform = 'scale(0.5)';
+                document.body.scrollLeft = mainDiv.offsetLeft;
                 mainDiv.scrollIntoView({block: "start", behavior: "smooth"});
             } else {
                 currentBlock = this;
                 mainDiv.style.transform = 'scale(1.0)';
+            document.body.scrollLeft = this.offsetLeft;
+                
                 this.scrollIntoView({block: "start", behavior: "smooth"});
             }
             
