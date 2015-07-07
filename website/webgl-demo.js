@@ -34,7 +34,7 @@ months[8] = "September";
 months[9] = "October";
 months[10] = "November";
 months[11] = "December";
-
+var nrOfMonths = 84;
 
 
     canvas = document.getElementById("glcanvas");
@@ -52,11 +52,11 @@ months[11] = "December";
         initShaders();
         initBuffers();
 
-        tempTextureArray = Array(809);
-        precTextureArray = Array(809);
-        presTextureArray = Array(809);
-        humTextureArray = Array(809);
-        for (var i = 0; i < 809; i++) {
+        tempTextureArray = Array(nrOfMonths);
+        precTextureArray = Array(nrOfMonths);
+        presTextureArray = Array(nrOfMonths);
+        humTextureArray = Array(nrOfMonths);
+        for (var i = 0; i < nrOfMonths; i++) {
             tempTextureArray[i] = gl.createTexture();
             humTextureArray[i] = gl.createTexture();
             precTextureArray[i] = gl.createTexture();
@@ -84,7 +84,7 @@ function loadData(filename, textureArray) {
         if (arrayBuffer) {
             var has_float_tex = gl.getExtension("OES_texture_float");
             var has_float_linear = gl.getExtension("OES_texture_float_linear");
-            for (var texNum = 0; texNum < 809; texNum++)
+            for (var texNum = 0; texNum < nrOfMonths; texNum++)
             {
                 var data = new Float32Array(256*128*3);
 
@@ -238,7 +238,7 @@ function drawScene() {
   if (document.getElementById("dataset-animate").checked) {
       setTimeout(function() { 
         var sliderVal = parseInt(document.getElementById("dataset-range").value);
-        sliderVal = (sliderVal+1)%809;
+        sliderVal = (sliderVal+1)%nrOfMonths;
         document.getElementById("dataset-range").value = sliderVal;
         updateSlider(sliderVal);
       }, 100);

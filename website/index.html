@@ -191,7 +191,7 @@
         </script>
         <link href="style.css" rel="stylesheet">
     </head>
-    <body onload="startDegreePlot();startCommunityPlot();networkgraphStart();grangergraphStart()">
+    <body onload="startDegreePlot();startCommunityPlot();networkgraphStart();grangergraphStart();start()">
         <div id="main">
             <header>
             <h1 onclick="document.documentElement.mozRequestFullScreen()">Analysing the Climate System using Complex Networks</h1>
@@ -199,13 +199,14 @@
             </header>
             <div id="left-column" style="width:800px; height:100%; float:left;">
             <article>
-            <h2 onclick="start();">Datasets</h2>
+            <h2>Datasets</h3>
             <canvas id="glcanvas" width="640" height="480" style="margin-bottom:30px;">
             Your browser doesn't appear to support the HTML5 <code>&lt;canvas&gt;</code> element.
             </canvas>
             <br/>
 
-            <input type=range min=0 max=808 value=0 step=1 oninput="document.getElementById('dataset-animate').checked = false; updateSlider(this.value);" id="dataset-range" style="width:600px;">
+            <input type=range min=0 max=83 value=0 step=1 oninput="document.getElementById('dataset-animate').checked = false; updateSlider(this.value);" id="dataset-range" style="width:550px;">
+            animate:
             <input id="dataset-animate" type=checkbox onchange="animateDataset();">
             <p>
             The models build on datasets from the NCEP/NCAR reanalysis project.  It takes data from heterogeneous, potentially incomplete sources and normalizes that data.  The  
@@ -216,7 +217,7 @@
                 <option value="humidity">humidity</option>
                 <option value="pressure">pressure</option>
             </select>  
-            data on <span id="dataset-date">January, 1948</span> is currently displayed. 
+            data on <span id="dataset-date">January, 1948</span> is currently displayed.</p><p>(Only a subset of the data is loaded on this webversion versus the version used during the presentation with 1948-now data, to prevent overlong load times.)
             
             </p>
             

@@ -18,6 +18,30 @@ var comTextureArray;
 
 var currentColor = -1;
 
+var currentBlock = undefined;
+
+
+
+    var h2s = document.getElementsByTagName('h2');
+
+    for(var i = 0; i < h2s.length; i++) {
+        h2s[i].addEventListener('click', function(evt) {
+            var mainDiv = document.getElementById("main");
+            if (currentBlock ==  this) {
+                currentBlock = undefined;
+                mainDiv.style.transform = 'scale(0.5)';
+                mainDiv.scrollIntoView({block: "start", behavior: "smooth"});
+            } else {
+                currentBlock = this;
+                mainDiv.style.transform = 'scale(1.0)';
+                this.scrollIntoView({block: "start", behavior: "smooth"});
+            }
+            
+        }, false);
+
+    }
+
+
     canvas = document.getElementById("community-canvas");
 
     function getMousePos(canvas, evt) {

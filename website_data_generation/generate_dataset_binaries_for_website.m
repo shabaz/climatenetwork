@@ -4,6 +4,7 @@ humidity = ncread('rhum.mon.mean.nc', 'rhum');
 temperature = ncread('air.mon.mean.nc', 'air');
 
 
+
 fileID = fopen('pr_wtr.bin','w');
 fwrite(fileID, pr_wtr(:,:,:), 'single');
 fclose(fileID);
