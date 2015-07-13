@@ -60,6 +60,7 @@
                         return colors[i] * (1.0-lerpVal) + colors[i+1] * lerpVal;
                     }
                 }
+                return vec3(0.0,0.0,0.0);
            }
             //http://geog.uoregon.edu/datagraphics/color/BuOr_8.txt
             lowp vec3 colorForPres(lowp float pres) {
@@ -84,6 +85,7 @@
                         return colors[i] * (1.0-lerpVal) + colors[i+1] * lerpVal;
                     }
                 }
+                return vec3(0.0,0.0,0.0);
            }
 
 
@@ -111,6 +113,7 @@
                         return colors[i] * (1.0-lerpVal) + colors[i+1] * lerpVal;
                     }
                 }
+                return vec3(0.0,0.0,0.0);
             }
 
             lowp vec3 colorForCommunity(lowp float community) {
@@ -124,28 +127,6 @@
                     }
                 }
                 return vec3(red,green,blue);
-
-
-
-
-
-                if (community == 1.0) {
-                    return vec3(1.0, 0.0, 0.0);
-                } else if (community == 2.0) {
-                    return vec3(0.0, 1.0, 0.0);
-                } else if (community == 3.0) {
-                    return vec3(0.0, 0.0, 1.0);
-                } else if (community == 4.0) {
-                    return vec3(0.0, 1.0, 1.0);
-                } else if (community == 5.0) {
-                    return vec3(1.0, 0.0, 1.0);
-                } else if (community == 6.0) {
-                    return vec3(1.0, 1.0, 0.0);
-                } else if (community > 6.0) {
-                    return vec3(1.0, 1.0, 1.0);
-                } else {
-                    return vec3(0.0, 0.0, 0.0);
-                }
             }
 
             void main(void) {
